@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:opsmindtest;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DATABASE_TO_LOWER=TRUE
+    username: sa
+    password:
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  data:
+    redis:
+      repositories:
+        enabled: false
+  flyway:
+    enabled: true
+  kafka:
+    listener:
+      auto-startup: false
+opsmind:
+  jwt-secret: test-secret-that-is-long-enough-for-automated-tests-123456789
+  access-token-seconds: 900
+  refresh-token-seconds: 604800
+  frontend-origin: http://localhost:5173
+  messaging-mode: local
+  deduplication-mode: local
+  seed-demo-data: true
