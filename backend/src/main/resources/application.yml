@@ -1,0 +1,61 @@
+spring:
+  application:
+    name: opsmind
+  datasource:
+    url: ${DB_URL:jdbc:h2:mem:opsmind;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DATABASE_TO_LOWER=TRUE}
+    username: ${DB_USERNAME:sa}
+    password: ${DB_PASSWORD:}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: opsmind
+      auto-offset-reset: earliest
+    listener:
+      missing-topics-fatal: false
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      repositories:
+        enabled: false
+server:
+  port: ${PORT:8080}
+  error:
+    include-message: never
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      probes:
+        enabled: true
+opsmind:
+  jwt-secret: ${JWT_SECRET:change-this-development-secret-before-production-123456789}
+  access-token-seconds: ${ACCESS_TOKEN_SECONDS:900}
+  refresh-token-seconds: ${REFRESH_TOKEN_SECONDS:604800}
+  frontend-origin: ${FRONTEND_ORIGIN:http://localhost:5173}
+  messaging-mode: ${MESSAGING_MODE:local}
+  deduplication-mode: ${DEDUPLICATION_MODE:local}
+  seed-demo-data: ${SEED_DEMO_DATA:true}
+
+---
+spring:
+  config:
+    activate:
+      on-profile: production
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/opsmind}
+    username: ${DB_USERNAME:opsmind}
+    password: ${DB_PASSWORD:opsmind}
+opsmind:
+  messaging-mode: kafka
+  deduplication-mode: redis
+  seed-demo-data: false
