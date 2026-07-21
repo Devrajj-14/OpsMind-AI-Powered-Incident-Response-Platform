@@ -1,0 +1,13 @@
+export type Role='ADMIN'|'ENGINEER'|'VIEWER'
+export type User={id:string;email:string;displayName:string;role:Role}
+export type Service={id:string;name:string;environment:string;ownerTeam:string;status:string;createdAt:string;apiKey?:string}
+export type Rule={id:string;serviceId:string;name:string;ruleType:string;keyword?:string;thresholdCount:number;windowSeconds:number;severity:string;deduplicationSeconds:number;enabled:boolean}
+export type Log={id:string;eventId:string;serviceId:string;occurredAt:string;level:string;message:string;traceId?:string;host?:string}
+export type Alert={id:string;serviceId:string;ruleId:string;incidentId?:string;severity:string;status:string;summary:string;evidence:string;triggeredAt:string}
+export type Incident={id:string;title:string;status:string;severity:string;assigneeId?:string;serviceId:string;alertCount:number;openedAt:string;acknowledgedAt?:string;resolvedAt?:string;resolutionSummary?:string;version:number}
+export type Analysis={id:string;status:string;summary?:string;hypotheses?:string;evidenceRefs?:string;model:string;errorMessage?:string;createdAt:string;completedAt?:string}
+export type IncidentDetail={incident:Incident;alerts:Alert[];notes:{id:string;authorId:string;body:string;createdAt:string}[];timeline:{id:string;actorId?:string;eventType:string;description:string;createdAt:string}[];analyses:Analysis[]}
+export type Page<T>={content:T[];totalElements:number;totalPages:number;page:number}
+export type VolumeBucket={label:string;start:string;total:number;errors:number;warnings:number}
+export type ServiceMetric={serviceId:string;name:string;environment:string;logs:number;alerts:number;incidents:number}
+export type Analytics={generatedAt:string;logVolume:VolumeBucket[];logsByLevel:Record<string,number>;incidentsByStatus:Record<string,number>;incidentsBySeverity:Record<string,number>;servicesByStatus:Record<string,number>;topServices:ServiceMetric[];mttaMinutes:number|null;mttrMinutes:number|null;actionableIncidents:number}
